@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Tabel Awarding 50.00 — Khosyi & Kesya</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #F8FAFC;
+            background-image:
+                radial-gradient(at 0% 0%, rgba(37, 99, 235, 0.05) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(5, 150, 105, 0.05) 0px, transparent 50%);
+            color: #0F172A;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #F1F5F9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #CBD5E1;
+            border-radius: 99px;
+        }
+
+        /* Animations & Micro-interactions */
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes popBounce {
+            0% {
+                transform: scale(0.78);
+            }
+
+            50% {
+                transform: scale(1.18);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes pulseGlow {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.85;
+                transform: scale(1.02);
+            }
+        }
+
+        @keyframes shakeError {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20%,
+            60% {
+                transform: translateX(-6px);
+            }
+
+            40%,
+            80% {
+                transform: translateX(6px);
+            }
+        }
+
+        .animate-row {
+            animation: fadeSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+
+        .animate-shake {
+            animation: shakeError 0.3s ease-in-out;
+        }
+
+        .animate-pulse-score {
+            animation: pulseGlow 0.4s ease-in-out;
+        }
+
+        .btn-check {
+            transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .btn-check:hover {
+            transform: translateY(-1px) scale(1.05);
+        }
+
+        .btn-check:active {
+            transform: scale(0.85);
+        }
+
+        .pop-trigger {
+            animation: popBounce 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* Sticky Columns & Shadow */
+        .sticky-col-no {
+            position: sticky;
+            left: 0;
+            z-index: 25;
+        }
+
+        .sticky-col-date {
+            position: sticky;
+            left: 38px;
+            z-index: 25;
+        }
+
+        @media (min-width: 640px) {
+            .sticky-col-date {
+                left: 44px;
+            }
+        }
+
+        .sticky-col-shadow::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -8px;
+            bottom: 0;
+            width: 8px;
+            background: linear-gradient(to right, rgba(15, 23, 42, 0.07), transparent);
+            pointer-events: none;
+        }
+
+        /* Toast */
+        .toast-enter {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+
+        .toast-exit {
+            transform: translateY(15px) scale(0.95);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* =========================================================
+       PRINT / PDF STYLING (A4 LANDSCAPE)
+       ========================================================= */
+        @media print {
+            @page {
+                size: A4 landscape;
+                margin: 6mm;
+            }
+
+            body {
+                background: #FFFFFF !important;
+                font-size: 8pt !important;
+                -webkit-print-color-adjust: exact !important;
+            }
+
+            .no-print,
+            #auth-overlay,
+            #backup-modal,
+            #password-modal {
+                display: none !important;
+            }
+
+            .main-container {
+                max-width: 100% !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+
+            .table-card {
+                box-shadow: none !important;
+                border: 1px solid #1E293B !important;
+            }
+
+            .table-scroll-wrapper {
+                overflow: visible !important;
+            }
+
+            table {
+                width: 100% !important;
+                border-collapse: collapse !important;
+                table-layout: fixed !important;
+            }
+
+            thead th,
+            tbody td,
+            tfoot td {
+                position: static !important;
+                padding: 2px !important;
+                font-size: 7pt !important;
+                border: 1px solid #94A3B8 !important;
+            }
+
+            .sticky-col-shadow::after {
+                display: none !important;
+            }
+
+            .btn-check {
+                width: 16px !important;
+                height: 14px !important;
+                font-size: 6pt !important;
+            }
+
+            .print-signature {
+                display: grid !important;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 12px;
+                margin-top: 6px;
+            }
+        }
+    </style>
+</head>
+
+<body class="min-h-screen antialiased selection:bg-blue-600 selection:text-white">
+
+    <!-- ==================== AUTHENTICATION OVERLAY ==================== -->
+    <div id="auth-overlay"
+        class="fixed inset-0 z-50 flex items-center justify-center p-3 bg-slate-900/80 backdrop-blur-md transition-opacity duration-300">
+        <div id="auth-card"
+            class="w-full max-w-sm bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden transition-all">
+            <div class="h-2 bg-gradient-to-r from-blue-600 via-indigo-600 to-emerald-500"></div>
+
+            <div class="p-6 sm:p-7">
+                <div
+                    class="w-11 h-11 rounded-2xl bg-slate-900 text-white flex items-center justify-center mb-4 shadow-md">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                    </svg>
+                </div>
+
+                <!-- Setup Password -->
+                <form id="setup-form" class="hidden space-y-3.5" onsubmit="handleCreatePassword(event)">
+                    <div>
+                        <span
+                            class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-blue-50 text-blue-700 border border-blue-200 mb-1.5">Pengaturan
+                            Awal</span>
+                        <h2 class="text-xl font-extrabold text-slate-900">Buat Password Baru</h2>
+                        <p class="text-xs text-slate-500 mt-1 leading-relaxed">Amankan Tabel Awarding Rp 50.000 Khosyi &
+                            Kesya dengan password pribadi Anda.</p>
+                    </div>
+                    <div class="space-y-2.5">
+                        <div>
+                            <label class="block text-[10px] font-bold uppercase text-slate-700 mb-1">Password
+                                Baru</label>
+                            <input type="password" id="new-password" required minlength="4"
+                                placeholder="Min. 4 karakter"
+                                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600" />
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold uppercase text-slate-700 mb-1">Konfirmasi
+                                Password</label>
+                            <input type="password" id="confirm-password" required minlength="4"
+                                placeholder="Ulangi password"
+                                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600" />
+                        </div>
+                    </div>
+                    <p id="setup-error" class="hidden text-xs text-rose-600 bg-rose-50 p-2 rounded-lg font-semibold">
+                    </p>
+                    <button type="submit"
+                        class="w-full py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm shadow-sm transition active:scale-[0.98]">Simpan
+                        & Buka Tabel</button>
+                </form>
+
+                <!-- Login -->
+                <form id="login-form" class="hidden space-y-3.5" onsubmit="handleLogin(event)">
+                    <div>
+                        <span
+                            class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200 mb-1.5">Akses
+                            Terkunci</span>
+                        <h2 class="text-xl font-extrabold text-slate-900">Masukkan Password</h2>
+                        <p class="text-xs text-slate-500 mt-1">Masukkan password Anda untuk melanjutkan evaluasi.</p>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase text-slate-700 mb-1">Password</label>
+                        <input type="password" id="login-password" required placeholder="Masukkan password"
+                            class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600" />
+                    </div>
+                    <p id="login-error" class="hidden text-xs text-rose-600 bg-rose-50 p-2 rounded-lg font-semibold">
+                        Password salah.</p>
+                    <div class="space-y-2 pt-1">
+                        <button type="submit"
+                            class="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm shadow-sm transition active:scale-[0.98]">Buka
+                            Tabel</button>
+                        <button type="button" onclick="bypassLogin()"
+                            class="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition flex items-center justify-center gap-1">
+                            <span>Lupa password?</span> <span class="text-blue-600 underline">Lanjut Lihat Data
+                                Tabel</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MAIN APP CONTAINER ==================== -->
+    <div id="app-content" class="main-container hidden max-w-[1400px] mx-auto px-2.5 sm:px-6 py-4 sm:py-6">
+
+        <!-- Header Card -->
+        <header class="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-4 sm:p-6 mb-4">
+            <div class="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-3.5">
+
+                <div class="space-y-1.5">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <span
+                            class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-emerald-50 border border-emerald-200 text-[10px] font-bold uppercase text-emerald-700">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Tersimpan
+                            Selamanya
+                        </span>
+                        <span id="period-subtitle" class="text-[11px] font-semibold text-slate-500"></span>
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-2">
+                        <h1 class="text-lg sm:text-2xl font-extrabold text-slate-900 tracking-tight">
+                            Tabel Awarding <span class="font-mono text-blue-600">50.000</span>
+                        </h1>
+                        <!-- Month Selector -->
+                        <div
+                            class="no-print inline-flex items-center bg-slate-100 border border-slate-200 rounded-lg p-0.5">
+                            <button type="button" id="btn-prev-month" onclick="stepMonth(-1)"
+                                class="p-1 rounded text-slate-600 hover:bg-white disabled:opacity-30 transition"><svg
+                                    class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M15.75 19.5L8.25 12l7.5-7.5" />
+                                </svg></button>
+                            <select id="month-selector" onchange="onSelectMonth(this.value)"
+                                class="bg-transparent text-xs font-bold text-slate-800 px-1.5 py-0.5 focus:outline-none cursor-pointer"></select>
+                            <button type="button" id="btn-next-month" onclick="stepMonth(1)"
+                                class="p-1 rounded text-slate-600 hover:bg-white transition"><svg class="w-3.5 h-3.5"
+                                    fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                                </svg></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons (Dilengkapi Tombol "Out / Logout" Kembali ke Login) -->
+                <div class="no-print grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-1.5">
+                    <button onclick="openBackupModal()"
+                        class="px-2.5 py-2 rounded-xl text-[11px] font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 transition">Backup</button>
+                    <button onclick="openPasswordModal()"
+                        class="px-2.5 py-2 rounded-xl text-[11px] font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 transition">Password</button>
+                    <button onclick="lockApp()"
+                        class="px-2.5 py-2 rounded-xl text-[11px] font-semibold text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200 transition">Kunci</button>
+                    <button onclick="logoutToAuth()"
+                        class="px-2.5 py-2 rounded-xl text-[11px] font-bold text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 transition flex items-center justify-center gap-1">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+                        </svg>
+                        Keluar (Out)
+                    </button>
+                    <button onclick="window.print()"
+                        class="col-span-2 sm:col-span-1 px-3 py-2 rounded-xl text-[11px] font-bold text-white bg-slate-900 hover:bg-slate-800 shadow-sm transition">Cetak
+                        PDF</button>
+                </div>
+            </div>
+
+            <!-- Scoreboard Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3.5 pt-3.5 border-t border-slate-100">
+                <!-- Khosyi -->
+                <div
+                    class="rounded-xl bg-gradient-to-br from-blue-50 via-white to-blue-50/30 border border-blue-200/80 p-3 shadow-xs">
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="flex items-center gap-2.5">
+                            <div
+                                class="w-9 h-9 rounded-lg bg-blue-600 text-white font-extrabold text-xs flex items-center justify-center shadow-xs">
+                                KH</div>
+                            <div>
+                                <div class="flex items-center gap-1.5">
+                                    <h2 class="font-bold text-slate-900 text-xs sm:text-sm">Khosyi</h2>
+                                    <span id="month-badge-khosyi"
+                                        class="px-1.5 py-0.5 text-[8px] font-bold uppercase rounded bg-blue-100 text-blue-700"></span>
+                                </div>
+                                <p class="text-[10px] text-slate-500">Terpenuhi: <strong id="count-khosyi"
+                                        class="text-slate-700 font-mono">0</strong> / <span
+                                        class="max-raw-label">92</span></p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-[9px] font-semibold uppercase text-slate-400">Skor</div>
+                            <div class="flex items-baseline justify-end gap-0.5">
+                                <span id="score-khosyi"
+                                    class="font-mono text-lg sm:text-xl font-extrabold text-blue-600">0.00</span>
+                                <span class="font-mono text-[9px] text-slate-400">/50</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-full h-1.5 bg-blue-100 rounded-full overflow-hidden mt-2.5">
+                        <div id="bar-khosyi" class="h-full bg-blue-600 rounded-full transition-all duration-500"
+                            style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <!-- Kesya -->
+                <div
+                    class="rounded-xl bg-gradient-to-br from-emerald-50 via-white to-emerald-50/30 border border-emerald-200/80 p-3 shadow-xs">
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="flex items-center gap-2.5">
+                            <div
+                                class="w-9 h-9 rounded-lg bg-emerald-600 text-white font-extrabold text-xs flex items-center justify-center shadow-xs">
+                                KS</div>
+                            <div>
+                                <div class="flex items-center gap-1.5">
+                                    <h2 class="font-bold text-slate-900 text-xs sm:text-sm">Kesya</h2>
+                                    <span id="month-badge-kesya"
+                                        class="px-1.5 py-0.5 text-[8px] font-bold uppercase rounded bg-emerald-100 text-emerald-700"></span>
+                                </div>
+                                <p class="text-[10px] text-slate-500">Terpenuhi: <strong id="count-kesya"
+                                        class="text-slate-700 font-mono">0</strong> / <span
+                                        class="max-raw-label">92</span></p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-[9px] font-semibold uppercase text-slate-400">Skor</div>
+                            <div class="flex items-baseline justify-end gap-0.5">
+                                <span id="score-kesya"
+                                    class="font-mono text-lg sm:text-xl font-extrabold text-emerald-600">0.00</span>
+                                <span class="font-mono text-[9px] text-slate-400">/50</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-full h-1.5 bg-emerald-100 rounded-full overflow-hidden mt-2.5">
+                        <div id="bar-kesya" class="h-full bg-emerald-600 rounded-full transition-all duration-500"
+                            style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Data Table Container -->
+        <div class="table-card bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden">
+            <div class="table-scroll-wrapper overflow-x-auto">
+                <table class="w-full text-left border-collapse min-w-[920px]">
+                    <thead>
+                        <tr class="border-b border-slate-200">
+                            <th rowspan="2"
+                                class="sticky-col-no bg-slate-900 text-white text-center font-bold text-[11px] uppercase w-9 py-2.5 px-1 border-r border-slate-700">
+                                No</th>
+                            <th rowspan="2" id="th-month-title"
+                                class="sticky-col-date sticky-col-shadow bg-slate-900 text-white font-bold text-[11px] uppercase w-36 sm:w-40 py-2.5 px-2 border-r border-slate-700">
+                                Tanggal</th>
+
+                            <!-- Khosyi Header -->
+                            <th colspan="5"
+                                class="bg-blue-700 text-white text-center py-2 px-1.5 border-r-2 border-slate-300">
+                                <span class="font-extrabold text-[11px] tracking-wider uppercase">KHOSYI</span>
+                            </th>
+                            <!-- Kesya Header -->
+                            <th colspan="5" class="bg-emerald-700 text-white text-center py-2 px-1.5">
+                                <span class="font-extrabold text-[11px] tracking-wider uppercase">KESYA</span>
+                            </th>
+                        </tr>
+                        <tr class="text-[9px] sm:text-[10px] font-bold uppercase border-b border-slate-200">
+                            <!-- Khosyi Criteria -->
+                            <th class="bg-blue-50 text-blue-900 text-center py-1.5 px-1 border-r">Agama</th>
+                            <th class="bg-blue-50 text-blue-900 text-center py-1.5 px-1 border-r">Tgg Jwb</th>
+                            <th class="bg-blue-50 text-blue-900 text-center py-1.5 px-1 border-r">Org Tua</th>
+                            <th class="bg-blue-50 text-blue-900 text-center py-1.5 px-1 border-r">Kerukunan</th>
+                            <th
+                                class="bg-blue-100 text-blue-950 text-center py-1.5 px-1 border-r-2 border-slate-300 w-14">
+                                Poin</th>
+
+                            <!-- Kesya Criteria -->
+                            <th class="bg-emerald-50 text-emerald-900 text-center py-1.5 px-1 border-r">Agama</th>
+                            <th class="bg-emerald-50 text-emerald-900 text-center py-1.5 px-1 border-r">Tgg Jwb</th>
+                            <th class="bg-emerald-50 text-emerald-900 text-center py-1.5 px-1 border-r">Org Tua</th>
+                            <th class="bg-emerald-50 text-emerald-900 text-center py-1.5 px-1 border-r">Kerukunan</th>
+                            <th class="bg-emerald-100 text-emerald-950 text-center py-1.5 px-1 w-14">Poin</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body" class="divide-y divide-slate-100 text-xs"></tbody>
+                    <tfoot>
+                        <tr class="bg-slate-900 text-white font-bold text-[11px]">
+                            <td colspan="2"
+                                class="sticky-col-no sticky-col-date bg-slate-900 py-2.5 px-2 text-right uppercase border-r border-slate-700">
+                                Total Skor</td>
+                            <td colspan="4"
+                                class="bg-blue-950 py-2 px-1 text-center text-blue-200 text-[10px] border-r border-blue-900">
+                                <span id="footer-detail-khosyi">0 / 92</span>
+                            </td>
+                            <td id="footer-score-khosyi"
+                                class="bg-blue-700 py-2 px-1 text-center font-mono text-xs sm:text-sm font-extrabold text-white border-r-2 border-slate-400">
+                                0.00</td>
+                            <td colspan="4"
+                                class="bg-emerald-950 py-2 px-1 text-center text-emerald-200 text-[10px] border-r border-emerald-900">
+                                <span id="footer-detail-kesya">0 / 92</span>
+                            </td>
+                            <td id="footer-score-kesya"
+                                class="bg-emerald-700 py-2 px-1 text-center font-mono text-xs sm:text-sm font-extrabold text-white">
+                                0.00</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <!-- Print Signatures -->
+        <div class="hidden print-signature text-xs text-slate-700 pt-2">
+            <div class="border border-slate-300 rounded p-2 bg-slate-50">
+                <p class="font-bold text-slate-900">Keterangan (<span id="print-period-note"></span>):</p>
+                <p class="text-[9px]">✓ = 1.0 | ½ = 0.5 | — = 0. Rumus: (Total Poin ÷ <span id="print-max-raw"></span>)
+                    × 50.00</p>
+            </div>
+            <div class="text-center py-1">
+                <p class="font-semibold">Peserta,</p>
+                <div class="mt-6 flex justify-around">
+                    <div>
+                        <div class="w-16 border-b border-slate-800 mx-auto mb-1"></div><b>Khosyi</b>
+                    </div>
+                    <div>
+                        <div class="w-16 border-b border-slate-800 mx-auto mb-1"></div><b>Kesya</b>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center py-1">
+                <p class="font-semibold">Orang Tua / Wali,</p>
+                <div class="mt-6">
+                    <div class="w-28 border-b border-slate-800 mx-auto"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Password Modal -->
+    <div id="password-modal"
+        class="no-print hidden fixed inset-0 z-50 flex items-center justify-center p-3 bg-slate-900/60 backdrop-blur-xs">
+        <div class="bg-white w-full max-w-sm rounded-2xl shadow-xl p-5 border border-slate-200">
+            <div class="flex justify-between items-center mb-3">
+                <h3 class="font-extrabold text-slate-900 text-sm">Ubah Password</h3>
+                <button onclick="closePasswordModal()" class="text-slate-400 font-bold text-sm">✕</button>
+            </div>
+            <form onsubmit="handleChangePassword(event)" class="space-y-3">
+                <div>
+                    <label class="block text-[10px] font-bold uppercase text-slate-600 mb-1">Password Lama</label>
+                    <input type="password" id="old-pass" required
+                        class="w-full px-3 py-2 rounded-xl border text-xs focus:outline-none focus:ring-2 focus:ring-blue-600" />
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold uppercase text-slate-600 mb-1">Password Baru</label>
+                    <input type="password" id="new-pass" required minlength="4"
+                        class="w-full px-3 py-2 rounded-xl border text-xs focus:outline-none focus:ring-2 focus:ring-blue-600" />
+                </div>
+                <p id="change-pass-error" class="hidden text-xs text-rose-600 bg-rose-50 p-2 rounded"></p>
+                <div class="flex justify-end gap-2 pt-1">
+                    <button type="button" onclick="closePasswordModal()"
+                        class="px-3 py-1.5 text-xs font-bold text-slate-600">Batal</button>
+                    <button type="submit"
+                        class="px-3 py-1.5 text-xs font-bold text-white bg-blue-600 rounded-lg">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Backup Modal -->
+    <div id="backup-modal"
+        class="no-print hidden fixed inset-0 z-50 flex items-center justify-center p-3 bg-slate-900/60 backdrop-blur-xs">
+        <div class="bg-white w-full max-w-sm rounded-2xl shadow-xl p-5 border border-slate-200">
+            <div class="flex justify-between items-center mb-2">
+                <h3 class="font-extrabold text-slate-900 text-sm">Backup & Restore</h3>
+                <button onclick="closeBackupModal()" class="text-slate-400 font-bold text-sm">✕</button>
+            </div>
+            <p class="text-xs text-slate-500 mb-3">Data tersimpan permanen di perangkat Anda.</p>
+            <div class="space-y-2">
+                <button onclick="exportBackupFile()"
+                    class="w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition">Unduh
+                    File (.json)</button>
+                <label
+                    class="w-full py-2.5 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 rounded-xl text-xs font-bold flex items-center justify-center cursor-pointer transition">
+                    Pulihkan File (.json)
+                    <input type="file" accept=".json" onchange="importBackupFile(event)" class="hidden" />
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast"
+        class="no-print fixed bottom-4 right-4 z-50 bg-slate-900 text-white text-xs font-semibold px-3.5 py-2 rounded-xl shadow-lg flex items-center gap-2 transition-all duration-300 toast-exit">
+        <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+        <span id="toast-msg">Tersimpan</span>
+    </div>
+
+    <script>
+        const PASS_KEY = 'awarding_50_password_hash_v2';
+        const DATA_KEY = 'awarding_50_permanent_data_v2';
+        const SESSION_KEY = 'awarding_50_session_unlocked';
+
+        const CRITERIA = ['agama', 'tanggungJawab', 'orangTua', 'kerukunanSaudara'];
+        const PEOPLE = ['khosyi', 'kesya'];
+        const MAX_SCORE = 50.00;
+
+        const BULAN_ID = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+        const HARI_ID = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+
+        const START_YEAR = 2026;
+        const START_MONTH = 10; // November
+
+        let currentYear = START_YEAR;
+        let currentMonth = START_MONTH;
+        let records = loadPermanentRecords();
+
+        async function hashPass(str) {
+            const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('SALT_' + str));
+            return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        async function initAuth() {
+            const savedHash = localStorage.getItem(PASS_KEY);
+            const isUnlocked = sessionStorage.getItem(SESSION_KEY) === 'true';
+
+            if (!savedHash) {
+                document.getElementById('setup-form').classList.remove('hidden');
+                document.getElementById('auth-overlay').classList.remove('hidden');
+            } else if (!isUnlocked) {
+                document.getElementById('login-form').classList.remove('hidden');
+                document.getElementById('auth-overlay').classList.remove('hidden');
+            } else {
+                unlockApp();
+            }
+        }
+
+        async function handleCreatePassword(e) {
+            e.preventDefault();
+            const p1 = document.getElementById('new-password').value;
+            const p2 = document.getElementById('confirm-password').value;
+            const err = document.getElementById('setup-error');
+            if (p1 !== p2) {
+                err.textContent = 'Konfirmasi password tidak cocok.';
+                err.classList.remove('hidden');
+                return;
+            }
+            localStorage.setItem(PASS_KEY, await hashPass(p1));
+            sessionStorage.setItem(SESSION_KEY, 'true');
+            unlockApp();
+            showToast('Password tersimpan permanen!');
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            const val = document.getElementById('login-password').value;
+            const err = document.getElementById('login-error');
+            if (await hashPass(val) === localStorage.getItem(PASS_KEY)) {
+                sessionStorage.setItem(SESSION_KEY, 'true');
+                unlockApp();
+            } else {
+                err.classList.remove('hidden');
+                document.getElementById('auth-card').classList.add('animate-shake');
+                setTimeout(() => document.getElementById('auth-card').classList.remove('animate-shake'), 300);
+            }
+        }
+
+        function bypassLogin() {
+            sessionStorage.setItem(SESSION_KEY, 'true');
+            unlockApp();
+            showToast('Masuk tanpa password');
+        }
+
+        function unlockApp() {
+            document.getElementById('auth-overlay').classList.add('hidden');
+            document.getElementById('app-content').classList.remove('hidden');
+            populateMonths();
+            renderTable();
+        }
+
+        function lockApp() {
+            sessionStorage.removeItem(SESSION_KEY);
+            location.reload();
+        }
+
+        // Tombol Keluar (Out) kembali ke halaman Login Password
+        function logoutToAuth() {
+            sessionStorage.removeItem(SESSION_KEY);
+            document.getElementById('app-content').classList.add('hidden');
+            document.getElementById('setup-form').classList.add('hidden');
+            document.getElementById('login-form').classList.remove('hidden');
+            document.getElementById('auth-overlay').classList.remove('hidden');
+            document.getElementById('login-password').value = '';
+            document.getElementById('login-password').focus();
+            showToast('Berhasil keluar ke halaman login');
+        }
+
+        function loadPermanentRecords() {
+            try {
+                const d = localStorage.getItem(DATA_KEY);
+                if (d) return JSON.parse(d);
+            } catch (e) { }
+            return {};
+        }
+
+        function savePermanentRecords() {
+            try {
+                localStorage.setItem(DATA_KEY, JSON.stringify(records));
+            } catch (e) { }
+        }
+
+        function getVal(k, p, c) { return records?.[k]?.[p]?.[c] ?? 0; }
+        function setVal(k, p, c, val) {
+            if (!records[k]) {
+                records[k] = { khosyi: { agama: 0, tanggungJawab: 0, orangTua: 0, kerukunanSaudara: 0 }, kesya: { agama: 0, tanggungJawab: 0, orangTua: 0, kerukunanSaudara: 0 } };
+            }
+            records[k][p][c] = val;
+            savePermanentRecords();
+        }
+
+        function populateMonths() {
+            const sel = document.getElementById('month-selector');
+            sel.innerHTML = '';
+            for (let i = 0; i < 36; i++) {
+                const d = new Date(START_YEAR, START_MONTH + i, 1);
+                const y = d.getFullYear();
+                const m = d.getMonth();
+                const val = `${y}-${String(m + 1).padStart(2, '0')}`;
+                const opt = document.createElement('option');
+                opt.value = val;
+                opt.textContent = `${BULAN_ID[m]} ${y}`;
+                if (y === currentYear && m === currentMonth) opt.selected = true;
+                sel.appendChild(opt);
+            }
+        }
+
+        function onSelectMonth(v) {
+            const [y, m] = v.split('-').map(Number);
+            currentYear = y;
+            currentMonth = m - 1;
+            renderTable();
+        }
+
+        function stepMonth(dir) {
+            const d = new Date(currentYear, currentMonth + dir, 1);
+            if (d.getFullYear() < START_YEAR || (d.getFullYear() === START_YEAR && d.getMonth() < START_MONTH)) return;
+            currentYear = d.getFullYear();
+            currentMonth = d.getMonth();
+            document.getElementById('month-selector').value = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}`;
+            renderTable();
+        }
+
+        function getDates(y, m) {
+            const start = (y === START_YEAR && m === START_MONTH) ? 8 : 1;
+            const total = new Date(y, m + 1, 0).getDate();
+            const list = [];
+            for (let day = start; day <= total; day++) {
+                const dt = new Date(y, m, day);
+                const dayIdx = dt.getDay();
+                const key = `${y}-${String(m + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                list.push({ key, no: day - start + 1, label: `${day} ${BULAN_ID[m]} ${y}`, dayName: HARI_ID[dayIdx], isWeekend: dayIdx === 0 || dayIdx === 6 });
+            }
+            return list;
+        }
+
+        function getVisual(val, person) {
+            if (val === 1) return { text: '✓', classes: person === 'khosyi' ? 'bg-blue-600 text-white' : 'bg-emerald-600 text-white' };
+            if (val === 0.5) return { text: '½', classes: 'bg-amber-400 text-slate-950 font-extrabold' };
+            return { text: '—', classes: 'bg-slate-50 text-slate-400 border-slate-200 hover:bg-slate-100' };
+        }
+
+        function renderTable() {
+            const dates = getDates(currentYear, currentMonth);
+            const maxRaw = dates.length * CRITERIA.length;
+            const monthTitle = `${BULAN_ID[currentMonth]} ${currentYear}`;
+
+            document.getElementById('btn-prev-month').disabled = (currentYear === START_YEAR && currentMonth === START_MONTH);
+            document.getElementById('period-subtitle').textContent = `${dates[0].label} – ${dates[dates.length - 1].label} (${dates.length} Hari)`;
+            document.getElementById('th-month-title').textContent = `Tanggal (${monthTitle})`;
+            document.getElementById('month-badge-khosyi').textContent = monthTitle;
+            document.getElementById('month-badge-kesya').textContent = monthTitle;
+            document.getElementById('print-period-note').textContent = monthTitle;
+            document.getElementById('print-max-raw').textContent = maxRaw;
+            document.querySelectorAll('.max-raw-label').forEach(el => el.textContent = maxRaw);
+
+            const tbody = document.getElementById('table-body');
+            tbody.innerHTML = '';
+
+            dates.forEach((d, idx) => {
+                const tr = document.createElement('tr');
+                const bgClass = d.isWeekend ? 'bg-slate-50' : 'bg-white';
+                tr.className = `animate-row ${bgClass}`;
+                tr.style.animationDelay = `${Math.min(idx * 6, 180)}ms`;
+
+                let html = `
+          <td class="sticky-col-no ${bgClass} text-center font-mono text-[11px] font-bold text-slate-500 py-2 px-1 border-r border-slate-200">${d.no}</td>
+          <td class="sticky-col-date sticky-col-shadow ${bgClass} py-2 px-2 border-r border-slate-200">
+            <div class="flex items-center justify-between gap-1">
+              <span class="font-semibold text-slate-800 text-[11px] sm:text-xs whitespace-nowrap">${d.label}</span>
+              <span class="text-[8px] font-bold uppercase px-1 py-0.5 rounded ${d.isWeekend ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-500'}">${d.dayName}</span>
+            </div>
+          </td>
+        `;
+
+                PEOPLE.forEach((p, pIdx) => {
+                    CRITERIA.forEach(c => {
+                        const val = getVal(d.key, p, c);
+                        const vis = getVisual(val, p);
+                        html += `
+              <td class="text-center py-1.5 px-0.5 border-r border-slate-100">
+                <button type="button" id="btn-${d.key}-${p}-${c}" onclick="toggleCell('${d.key}','${p}','${c}')"
+                  class="btn-check w-7 h-7 sm:w-8 sm:h-8 rounded-md border font-bold text-xs inline-flex items-center justify-center cursor-pointer ${vis.classes}">
+                  ${vis.text}
+                </button>
+              </td>
+            `;
+                    });
+                    const daily = calcDaily(d.key, p, maxRaw);
+                    const borderRight = pIdx === 0 ? 'border-r-2 border-slate-300' : '';
+                    const badgeBg = p === 'khosyi' ? 'bg-blue-50/60 text-blue-800' : 'bg-emerald-50/60 text-emerald-800';
+                    html += `<td id="daily-${d.key}-${p}" class="${badgeBg} ${borderRight} text-center font-mono text-[11px] font-bold py-2 px-1">${daily.toFixed(2)}</td>`;
+                });
+
+                tr.innerHTML = html;
+                tbody.appendChild(tr);
+            });
+
+            updateTotals(maxRaw);
+        }
+
+        function toggleCell(k, p, c) {
+            const cur = getVal(k, p, c);
+            const next = cur === 0 ? 1 : cur === 1 ? 0.5 : 0;
+            setVal(k, p, c, next);
+
+            const dates = getDates(currentYear, currentMonth);
+            const maxRaw = dates.length * CRITERIA.length;
+
+            const btn = document.getElementById(`btn-${k}-${p}-${c}`);
+            if (btn) {
+                const vis = getVisual(next, p);
+                btn.className = `btn-check pop-trigger w-7 h-7 sm:w-8 sm:h-8 rounded-md border font-bold text-xs inline-flex items-center justify-center cursor-pointer ${vis.classes}`;
+                btn.textContent = vis.text;
+                setTimeout(() => btn.classList.remove('pop-trigger'), 250);
+            }
+
+            const dailyCell = document.getElementById(`daily-${k}-${p}`);
+            if (dailyCell) {
+                dailyCell.textContent = calcDaily(k, p, maxRaw).toFixed(2);
+            }
+            updateTotals(maxRaw);
+        }
+
+        function calcDaily(k, p, maxRaw) {
+            const raw = CRITERIA.reduce((s, c) => s + getVal(k, p, c), 0);
+            return (raw / maxRaw) * MAX_SCORE;
+        }
+
+        function updateTotals(maxRaw) {
+            const dates = getDates(currentYear, currentMonth);
+            PEOPLE.forEach(p => {
+                let totalRaw = 0;
+                dates.forEach(d => { CRITERIA.forEach(c => totalRaw += getVal(d.key, p, c)); });
+                const score = (totalRaw / maxRaw) * MAX_SCORE;
+                const pct = Math.min(100, (score / MAX_SCORE) * 100);
+                const rawStr = Number.isInteger(totalRaw) ? totalRaw : totalRaw.toFixed(1);
+
+                const scoreEl = document.getElementById(`score-${p}`);
+                if (scoreEl) {
+                    const oldScore = scoreEl.textContent;
+                    const newScoreText = score.toFixed(2);
+                    if (oldScore !== newScoreText) {
+                        scoreEl.textContent = newScoreText;
+                        scoreEl.classList.add('animate-pulse-score');
+                        setTimeout(() => scoreEl.classList.remove('animate-pulse-score'), 400);
+                    }
+                }
+
+                document.getElementById(`count-${p}`).textContent = rawStr;
+                document.getElementById(`bar-${p}`).style.width = `${pct}%`;
+                document.getElementById(`footer-score-${p}`).textContent = score.toFixed(2);
+                document.getElementById(`footer-detail-${p}`).textContent = `${rawStr} / ${maxRaw}`;
+            });
+        }
+
+        function openPasswordModal() { document.getElementById('password-modal').classList.remove('hidden'); }
+        function closePasswordModal() { document.getElementById('password-modal').classList.add('hidden'); }
+        async function handleChangePassword(e) {
+            e.preventDefault();
+            const oldP = document.getElementById('old-pass').value;
+            const newP = document.getElementById('new-pass').value;
+            const err = document.getElementById('change-pass-error');
+            if (await hashPass(oldP) !== localStorage.getItem(PASS_KEY)) {
+                err.textContent = 'Password lama salah.';
+                err.classList.remove('hidden');
+                return;
+            }
+            localStorage.setItem(PASS_KEY, await hashPass(newP));
+            closePasswordModal();
+            showToast('Password diperbarui');
+        }
+
+        function openBackupModal() { document.getElementById('backup-modal').classList.remove('hidden'); }
+        function closeBackupModal() { document.getElementById('backup-modal').classList.add('hidden'); }
+        function exportBackupFile() {
+            const blob = new Blob([JSON.stringify({ records }, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Backup_Awarding_${new Date().toISOString().slice(0, 10)}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            closeBackupModal();
+            showToast('File backup diunduh');
+        }
+        function importBackupFile(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function (evt) {
+                try {
+                    const parsed = JSON.parse(evt.target.result);
+                    if (parsed.records) {
+                        records = { ...records, ...parsed.records };
+                        savePermanentRecords();
+                        renderTable();
+                        closeBackupModal();
+                        showToast('Data dipulihkan');
+                    }
+                } catch (err) { alert('File tidak valid.'); }
+            };
+            reader.readAsText(file);
+        }
+
+        let toastTimer;
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            document.getElementById('toast-msg').textContent = msg;
+            t.classList.remove('toast-exit');
+            t.classList.add('toast-enter');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => { t.classList.remove('toast-enter'); t.classList.add('toast-exit'); }, 2200);
+        }
+
+        initAuth();
+    </script>
+</body>
+
+</html>
